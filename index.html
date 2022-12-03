@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/static/css/app.css" type="text/css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="/static/js/app.js" defer></script>
+    <title>Todo App</title>
+  </head>
+  <body>
+    <header class="flex flex-center">
+      <h1>Todo List</h1>
+    </header>
+
+    <form class="flex flex-center">
+      <input
+        type="text"
+        class="todo-input outline-none"
+        placeholder="Add new task!"
+        autofocus="on"
+        maxlength="42"
+      />
+      <button class="todo-btn" type="submit">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
+      <div class="select">
+        <select name="tasks" class="filter-tasks">
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="uncompleted">Uncompleted</option>
+        </select>
+      </div>
+    </form>
+    <div class="flex flex-center flex-column">
+      <p class="hidden flex flex-center" id="invalid-input">
+        <i class="fa-solid fa-triangle-exclamation"></i>&nbsp;Please Fill
+        Required Field!
+      </p>
+    </div>
+    <div class="flex flex-center">
+      <ul class="todo-list"></ul>
+    </div>
+
+    <script src="https://app.enzuzo.com/apps/enzuzo/static/js/__enzuzo-cookiebar.js?uuid=eccb4a78-72e6-11ed-806d-63578680ad27"></script>
+  </body>
+</html>
