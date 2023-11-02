@@ -110,6 +110,7 @@ function deleteCheck(e) {
   if (item.classList[0] === 'complete-btn') {
     const task = item.parentElement;
     task.classList.toggle('completed');
+     updateCompletionStatus(task);
   }
 }
 
@@ -214,5 +215,16 @@ function removeLocalTodos(todo) {
   const todoIndex = todo.children[0].innerText;
   console.log(todo.children[0].innerText);
   todos.splice(todos.indexOf(todoIndex), 1);
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+function updateCompletionStatus(task) {
+  const text = task.querySelector('.todo-item').innerText;
+  let todos = JSON.parse(localStorage.getItem('todos'));
+  todos = todos.map((todo) => {
+    if (todo.text === text) {
+      return { text: todo.text, completed: task.classList.contains('completed') };
+    }
+    return todo;
+  });
   localStorage.setItem('todos', JSON.stringify(todos));
 }
