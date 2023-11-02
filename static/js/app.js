@@ -6,7 +6,6 @@ const inValidateInput = document.querySelector('#invalid-input');
 const filterOption = document.querySelector('.filter-tasks');
 
 // EVENT LISTENERS
-
 document.addEventListener('DOMContentLoaded', getTodos);
 todoButton.addEventListener('click', addTodo);
 todoList.addEventListener('click', deleteCheck);
@@ -17,15 +16,16 @@ filterOption.addEventListener('click', filterTasks);
 // SHOWING ERROR MSG WHEN EMPTY
 const addingInvalidMsg = () => {
   inValidateInput.classList.remove('hidden');
-  inValidateInput.classList.add('invalide-input');
+  inValidateInput.classList.add('invalid-input');
   let timeOut = setTimeout(() => {
     deleteInvalidMsg(timeOut);
   }, 1500);
 };
+
 // REMOVING ERROR MSG WHEN !EMPTY
 const deleteInvalidMsg = () => {
   inValidateInput.classList.add('hidden');
-  inValidateInput.classList.remove('invalide-input');
+  inValidateInput.classList.remove('invalid-input');
   return false;
 };
 
@@ -42,60 +42,60 @@ function addTodo(e) {
   //  Create Li
   const newTodo = document.createElement('li');
 
-  //   Validating  empty input || Showing Error message.
-  //   if input filed is empty then show err msg!
+  //   Validating empty input || Showing Error message.
+  //   if the input field is empty, then show an error message
   if (todoInput.value === '') {
     addingInvalidMsg();
     return false;
   } else {
-    // else if user added value, hide err msg! & submit newTask
-    // hidding err msg!
+    // else, if the user added a value, hide the error message and submit the new task
+    // hiding the error message
     deleteInvalidMsg();
-    // Adding new task.
+    // Adding new task
     newTodo.innerText = todoInput.value;
   }
 
   // Appending li to DIV
   todoDiv.appendChild(newTodo);
 
-  //   Adding a class to li
+  // Adding a class to li
   newTodo.classList.add('todo-item');
 
   // Save task to localStorage
-  saveLocalTodos(todoInput.value);
+  saveLocalTodos(todoInput.value, false);
 
-  //   CHECK MARK BUTTON
+  // CHECK MARK BUTTON
 
-  //   Creating Completed task button
+  // Creating Completed task button
   const completeButton = document.createElement('button');
   completeButton.innerHTML = '<i class="fas fa-check"></i>';
 
-  //   Adding a class to the button
+  // Adding a class to the button
   completeButton.classList.add('complete-btn');
 
-  //   Appending complete button to DIV
+  // Appending complete button to DIV
   todoDiv.appendChild(completeButton);
 
-  //   Creating Delete button
+  // Creating Delete button
   const deleteButton = document.createElement('button');
   deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
 
-  //   Adding a class to the button
+  // Adding a class to the button
   deleteButton.classList.add('delete-btn');
 
-  //   Appending Delete button to DIV
+  // Appending Delete button to DIV
   todoDiv.appendChild(deleteButton);
 
-  //   Appending The Created DIV to list
+  // Appending The Created DIV to list
   todoList.appendChild(todoDiv);
 
-  //   Clearing the input filed.
+  // Clearing the input field
   todoInput.value = '';
 }
 
 function deleteCheck(e) {
   const item = e.target;
-  //  Delete Item
+
   if (item.classList[0] === 'delete-btn') {
     const todo = item.parentElement;
     // Animation
@@ -106,11 +106,10 @@ function deleteCheck(e) {
     });
   }
 
-  //   CHECK MARK
   if (item.classList[0] === 'complete-btn') {
     const task = item.parentElement;
     task.classList.toggle('completed');
-     updateCompletionStatus(task);
+    updateCompletionStatus(task);
   }
 }
 
@@ -137,23 +136,22 @@ function filterTasks(e) {
         break;
     }
   });
-  //   console.log(tasks);
 }
 
-function saveLocalTodos(todo) {
-  // CHECK If there is Tasks in Browser storage.
+function saveLocalTodos(todo, completed) {
+  // CHECK If there are tasks in Browser storage
   let todos;
   if (localStorage.getItem('todos') === null) {
     todos = [];
   } else {
     todos = JSON.parse(localStorage.getItem('todos'));
   }
-  todos.push(todo);
+  todos.push({ text: todo, completed: completed }); // Store the completion status
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 function getTodos() {
-  // CHECK If there is Tasks in Browser storage.
+  // CHECK If there are tasks in Browser storage
   let todos;
   if (localStorage.getItem('todos') === null) {
     todos = [];
@@ -161,7 +159,7 @@ function getTodos() {
     todos = JSON.parse(localStorage.getItem('todos'));
   }
   todos.forEach((todo) => {
-    // Showing Elements From LocalStorage.
+    // Showing Elements From LocalStorage
 
     const todoDiv = document.createElement('div');
     todoDiv.classList.add('flex');
@@ -169,54 +167,59 @@ function getTodos() {
 
     //  Create Li
     const newTodo = document.createElement('li');
-    newTodo.innerText = todo;
+    newTodo.innerText = todo.text;
 
-    //   Adding a class to li
+    // Adding a class to li
     newTodo.classList.add('todo-item');
 
     // Appending li to DIV
     todoDiv.appendChild(newTodo);
 
-    //   CHECK MARK BUTTON
+    // CHECK MARK BUTTON
 
-    //   Creating Completed task button
+    // Creating Completed task button
     const completeButton = document.createElement('button');
     completeButton.innerHTML = '<i class="fas fa-check"></i>';
 
-    //   Adding a class to the button
+    // Adding a class to the button
     completeButton.classList.add('complete-btn');
 
-    //   Appending complete button to DIV
+    // Appending complete button to DIV
     todoDiv.appendChild(completeButton);
 
-    //   Creating Delete button
+    // Creating Delete button
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
 
-    //   Adding a class to the button
+    // Adding a class to the button
     deleteButton.classList.add('delete-btn');
 
-    //   Appending Delete button to DIV
+    // Appending Delete button to DIV
     todoDiv.appendChild(deleteButton);
 
-    //   Appending The Created DIV to list
+    // Appending The Created DIV to list
     todoList.appendChild(todoDiv);
+
+    // Set the completion status based on the saved data
+    if (todo.completed) {
+      todoDiv.classList.add('completed');
+    }
   });
 }
 
 function removeLocalTodos(todo) {
-  // CHECK If there is Tasks in Browser storage.
+  // CHECK If there are tasks in Browser storage
   let todos;
   if (localStorage.getItem('todos') === null) {
     todos = [];
   } else {
     todos = JSON.parse(localStorage.getItem('todos'));
   }
-  const todoIndex = todo.children[0].innerText;
-  console.log(todo.children[0].innerText);
-  todos.splice(todos.indexOf(todoIndex), 1);
+  const todoIndex = todo.querySelector('.todo-item').innerText;
+  todos = todos.filter((item) => item.text !== todoIndex);
   localStorage.setItem('todos', JSON.stringify(todos));
 }
+
 function updateCompletionStatus(task) {
   const text = task.querySelector('.todo-item').innerText;
   let todos = JSON.parse(localStorage.getItem('todos'));
